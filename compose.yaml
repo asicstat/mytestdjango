@@ -12,7 +12,44 @@ services:
       - 5432
     restart: always
     networks:
-      - logistic-network
+      - default-network
+
+  backend:
+    image: image_name # <--- change this to the name of your backend image
+    command: gunicorn pitech.wsgi:application --bind 0.0.0.0:8000
+    networks:
+      - default-network
+    volumes:
+      - ./server/media:/project/media
+    env_file:
+      - ./server/.env
+    depends_on:
+      - postgresql
+    expose:
+      - 8000
+    restart: always
+  
+  frontend:
+    image: image_name # <--- change this to the name of your frontend image
+    networks:
+      - default-network
+    expose:
+      - 3000
+    restart: always
+  
+  nginx:
+    build:
+      context: ./nginx
+    networks:
+      - default-network
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./server/static:/project/static
+    restart: always
 
 networks:
-  logistic-network:
+  default-network:
