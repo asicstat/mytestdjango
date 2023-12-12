@@ -16,7 +16,7 @@ services:
 
   backend:
     image: image_name # <--- change this to the name of your backend image
-    command: gunicorn pitech.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn server.wsgi:application --bind 0.0.0.0:8000
     networks:
       - default-network
     volumes:
