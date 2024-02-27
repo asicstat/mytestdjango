@@ -15,7 +15,7 @@ services:
       - default-network
 
   backend:
-    image: image_name # <--- change this to the name of your backend image
+    image: mybackend:latest
     command: gunicorn server.wsgi:application --bind 0.0.0.0:8000
     networks:
       - default-network
@@ -30,7 +30,7 @@ services:
     restart: always
   
   frontend:
-    image: image_name # <--- change this to the name of your frontend image
+    image: myfrontend:latest 
     networks:
       - default-network
     expose:
